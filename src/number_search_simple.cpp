@@ -1,7 +1,7 @@
 /*
  * @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
  * @date Created 2022-01-20
- * @date Updated 2022-01-21
+ * @date Updated 2022-01-23
  */
 
 #include "number_search.h"
@@ -46,7 +46,7 @@ std::tuple<bool, uint64_t, std::size_t> find_number(const uint_t limit) {
     uint_t max_sequence_number{1};
     std::size_t max_sequence_length{1};
 
-    for (uint_t i = 2; i <= limit; ++i) {
+    for (uint_t i = 2; i < limit; ++i) {
         std::optional<std::size_t> steps_count = count_steps(i);
 
         if (!steps_count)

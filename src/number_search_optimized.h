@@ -1,7 +1,8 @@
 /*
  * @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
  * @date Created 2022-01-21
-*/
+ * @date Updated 2022-01-23
+ */
 
 #ifndef COLLATZ_CLI_NUMBER_SEARCH_OPTIMIZED_H
 #define COLLATZ_CLI_NUMBER_SEARCH_OPTIMIZED_H
@@ -24,18 +25,22 @@ public:
     SequenceLengthCounter operator=(const SequenceLengthCounter &) = delete;
     ~SequenceLengthCounter() = default;
 
-    std::size_t count(const uint_t start_value);
+    [[nodiscard]] std::size_t count(const uint_t start_value) const;
 
 private:
-    std::vector<std::size_t> _c;
-    std::vector<uint_t> _c_power_of_3;
-    std::vector<uint_t> _d;
-    std::vector<std::size_t> _steps_to_1;
+    struct PrecomputationItem {
+        uint_t _c_power_of_3;
+        uint_t _d;
+        std::size_t _c;
+        std::size_t _steps_to_1;
+    };
 
-    static constexpr std::size_t K_SCALE_FACTOR{24};
+    static constexpr std::size_t K_SCALE_FACTOR{16};
     static constexpr std::size_t PRECOMPUTATION_SIZE{1 << K_SCALE_FACTOR};
     static constexpr std::size_t ONE_IS_UNREACHABLE{
         std::numeric_limits<std::size_t>::max()};
+
+    std::array<PrecomputationItem, PRECOMPUTATION_SIZE> _precomputation;
 
     /**
      * Precompute segment for given start value
@@ -50,8 +55,7 @@ private:
      * @note this function is NOT overflow-safe. It's correctness is dependent
      * on the value of K_SCALE_FACTOR.
      */
-    static std::tuple<std::size_t, uint_t, uint_t, std::size_t> precompute(
-        uint_t value);
+    [[nodiscard]] static PrecomputationItem precompute(uint_t value);
 };
 
 #endif //COLLATZ_CLI_NUMBER_SEARCH_OPTIMIZED_H
