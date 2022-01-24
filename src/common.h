@@ -1,15 +1,38 @@
-/*
+/**
  * @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
  * @date Created 2022-01-20
-*/
+ * @date Updated 2022-01-24
+ */
 
 #ifndef COLLATZ_CLI_COMMON_H
 #define COLLATZ_CLI_COMMON_H
 
 #include <cstdint>
 #include <stdexcept>
+#include <iostream>
 
+// uint_t
+
+#if defined(USE_UINT128) && defined(__GNUC__) && defined(__BYTE_ORDER__) && \
+    (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+typedef __uint128_t uint_t;
+
+union Uint128Manipulator {
+    __uint128_t u128;
+    struct {
+        uint64_t _1;
+        uint64_t _2;
+    } u64;
+};
+
+std::string to_string(__uint128_t value);
+
+inline std::ostream &operator<<(std::ostream &ostream, __uint128_t value) {
+    return (ostream << to_string(value));
+}
+#else
 typedef uint64_t uint_t;
+#endif
 
 // ctz
 
@@ -54,6 +77,19 @@ inline std::size_t ctz(const unsigned long long v) {
 #endif
 }
 
+#if defined(USE_UINT128) && defined(__GNUC__) && defined(__BYTE_ORDER__) && \
+    (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+template <>
+inline std::size_t ctz(const __uint128_t v) {
+    const Uint128Manipulator uint128_manip{v};
+
+    if (uint128_manip.u64._1 == 0)
+        return ctz<uint64_t>(uint128_manip.u64._2) + 64;
+
+    return ctz<uint64_t>(uint128_manip.u64._1);
+}
+#endif
+
 // overflow-safe operations
 
 template <typename UINT_T>
@@ -88,6 +124,16 @@ inline unsigned long long safe_add(
     return result;
 }
 
+#if defined(USE_UINT128) && defined(__GNUC__) && defined(__BYTE_ORDER__) && \
+    (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+template <>
+inline __uint128_t safe_add(const __uint128_t p1, const __uint128_t p2) {
+    if (std::numeric_limits<__uint128_t>::max() - p2 < p1)
+        throw std::overflow_error("safe_add(...)");
+    return p1 + p2;
+}
+#endif
+
 template <typename UINT_T>
 UINT_T safe_multiply(const UINT_T, const UINT_T);
 
@@ -121,6 +167,16 @@ inline unsigned long long safe_multiply(
     return result;
 }
 
+#if defined(USE_UINT128) && defined(__GNUC__) && defined(__BYTE_ORDER__) && \
+    (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+template <>
+inline __uint128_t safe_multiply(const __uint128_t p1, const __uint128_t p2) {
+    if (std::numeric_limits<__uint128_t>::max() / p2 < p1)
+        throw std::overflow_error("safe_multiply(...)");
+    return p1 * p2;
+}
+#endif
+
 // utils
 
 /**
@@ -134,7 +190,7 @@ inline unsigned long long safe_multiply(
  * @return base raised to power
  */
 template <typename UINT_T>
-UINT_T uint_pow(UINT_T base, std::size_t power) {
+constexpr UINT_T uint_pow(UINT_T base, std::size_t power) {
     UINT_T result{1};
 
     while (power) {

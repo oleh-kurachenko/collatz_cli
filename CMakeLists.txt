@@ -15,6 +15,8 @@ set(CMAKE_CXX_FLAGS "-O3")
 set(BUILD_TYPE "OPT")
 # "YES"/"NO"
 set(USE_MULTITHREADING "YES")
+# "YES"/"NO"
+set(USE_UINT128 "YES")
 
 set(HEADERS
     src/common.h
@@ -25,14 +27,15 @@ set(HEADERS
 
 set(SOURCES
     src/main.cpp
+    src/common.cpp
     src/handle_input.cpp
     $<$<STREQUAL:${BUILD_TYPE},STD>:src/number_search_simple.cpp>
-    $<$<STREQUAL:${BUILD_TYPE},OPT>:src/number_search_optimized.cpp>
-)
+    $<$<STREQUAL:${BUILD_TYPE},OPT>:src/number_search_optimized.cpp>)
 
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC
     $<$<STREQUAL:${USE_MULTITHREADING},YES>:USE_MULTITHREADING>
+    $<$<STREQUAL:${USE_UINT128},YES>:USE_UINT128>
     # BUILD_TYPE_${BUILD_TYPE}
 )
 

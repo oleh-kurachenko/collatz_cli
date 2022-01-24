@@ -1,4 +1,4 @@
-/*
+/**
  * @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
  * @date Created 2022-01-20
  * @date Updated 2022-01-23
