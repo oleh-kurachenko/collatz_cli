@@ -1,7 +1,7 @@
 /**
  * @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
  * @date Created 2022-01-20
- * @date Updated 2022-01-23
+ * @date Updated 2022-01-24
  */
 
 #include <string>
@@ -36,8 +36,16 @@ std::size_t SequenceLengthCounter::count(const uint_t start_value) const {
         } else {
             uint_t b = t - (a << K_SCALE_FACTOR);
 
-            t = safe_add(safe_multiply(_precomputation[b]._c_power_of_3, a),
-                _precomputation[b]._d);
+            try {
+                t = safe_add(safe_multiply(
+                    _precomputation[b]._c_power_of_3, a),
+                        _precomputation[b]._d);
+            } catch (const std::overflow_error &error) {
+                throw std::overflow_error(
+                    "SequenceLengthCounter::count(" +
+                    to_string(start_value)+ ")");
+            }
+
             sequence_length += K_SCALE_FACTOR + _precomputation[b]._c;
         }
     }
@@ -112,7 +120,7 @@ static std::tuple<uint_t, std::size_t> find_number_modulo(
 
 namespace number_search {
 
-std::tuple<bool, uint64_t, std::size_t> find_number(const uint_t limit) {
+std::tuple<uint64_t, std::size_t> find_number(const uint_t limit) {
     SequenceLengthCounter sequenceLengthCounter;
 
     uint_t max_sequence_number{1};
@@ -143,7 +151,7 @@ std::tuple<bool, uint64_t, std::size_t> find_number(const uint_t limit) {
         }
     }
 #endif
-    return {true, max_sequence_number, max_sequence_length};
+    return {max_sequence_number, max_sequence_length};
 }
 
 }

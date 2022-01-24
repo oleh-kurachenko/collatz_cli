@@ -1,7 +1,7 @@
 ##
 #  @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
 #  @date Created 2022-01-20
-#  @date Updated 2022-01-23
+#  @date Updated 2022-01-24
 #
 
 cmake_minimum_required(VERSION 3.15)
@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-O3")
 
 # "STD"/"OPT"
-set(BUILD_TYPE "OPT")
+set(BUILD_TYPE "STD")
 # "YES"/"NO"
 set(USE_MULTITHREADING "YES")
 # "YES"/"NO"
@@ -30,7 +30,8 @@ set(SOURCES
     src/common.cpp
     src/handle_input.cpp
     $<$<STREQUAL:${BUILD_TYPE},STD>:src/number_search_simple.cpp>
-    $<$<STREQUAL:${BUILD_TYPE},OPT>:src/number_search_optimized.cpp>)
+    $<$<STREQUAL:${BUILD_TYPE},OPT>:src/number_search_optimized.cpp>
+)
 
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC

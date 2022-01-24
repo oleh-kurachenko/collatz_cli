@@ -1,7 +1,8 @@
-/*
+/**
  * @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
  * @date Created 2022-01-20
-*/
+ * @date Updated 2022-01-24
+ */
 
 #ifndef COLLATZ_CLI_NUMBER_SEARCH_H
 #define COLLATZ_CLI_NUMBER_SEARCH_H
@@ -14,15 +15,14 @@
 
 namespace number_search {
 
-std::tuple<bool, uint64_t, std::size_t> find_number_simple(const uint_t limit);
-
 /**
  * @return
- * true; number with the largest sequence length, while being less then limit,
- * if it can correctly found; length of such sequence.
- * false; start number at which overflow happens otherwise; zero.
+ * number with the largest sequence length, while being less then limit start
+ * number; length of those sequence.
+ *
+ * @throws std::overflow_error
  */
-std::tuple<bool, uint64_t, std::size_t> find_number(const uint_t limit);
+std::tuple<uint64_t, std::size_t> find_number(const uint_t limit);
 
 }
 

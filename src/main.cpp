@@ -1,7 +1,8 @@
-/*
+/**
  * @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
  * @date Created 2022-01-20
-*/
+ * @date Updated 2022-01-24
+ */
 
 #include <iostream>
 
@@ -27,23 +28,31 @@ int main(const int argc, const char *const *const argv) {
         return 2;
     }
 
-    std::tuple<bool, uint64_t, std::size_t> max_sequence_number =
-        number_search::find_number(input_number.value());
+    uint_t max_sequence_number{0};
+    std::size_t max_sequence_length{0};
 
-    if (!std::get<0>(max_sequence_number)) {
+    try {
+        std::tie(max_sequence_number, max_sequence_length) =
+            number_search::find_number(input_number.value());
+    } catch (const std::overflow_error &error) {
         std::cerr
-            << "Integer overflow during computation at sequence starting with "
-            << std::get<1>(max_sequence_number)
-            << ", aborting"
+            << "Integer overflow during computation at "
+            << error.what()
+            << ", aborting."
             << std::endl;
         return 3;
+    } catch (...) {
+        std::cerr
+            << "Unexpected error during max sequence computation"
+            << std::endl;
+        return 127;
     }
 
     std::cout
         << "Sequence with maximum length starts with: "
-        << std::get<1>(max_sequence_number)
+        << max_sequence_number
         << ", sequence length: "
-        << std::get<2>(max_sequence_number)
+        << max_sequence_length
         << std::endl;
     return 0;
 }

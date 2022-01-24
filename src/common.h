@@ -32,6 +32,7 @@ inline std::ostream &operator<<(std::ostream &ostream, __uint128_t value) {
 }
 #else
 typedef uint64_t uint_t;
+using std::to_string;
 #endif
 
 // ctz
