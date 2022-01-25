@@ -35,7 +35,7 @@ private:
         std::size_t _steps_to_1;
     };
 
-    static constexpr std::size_t K_SCALE_FACTOR{16};
+    static constexpr std::size_t K_SCALE_FACTOR{2};
     static constexpr std::size_t PRECOMPUTATION_SIZE{1 << K_SCALE_FACTOR};
     static constexpr std::size_t ONE_IS_UNREACHABLE{
         std::numeric_limits<std::size_t>::max()};

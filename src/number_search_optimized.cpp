@@ -85,6 +85,7 @@ SequenceLengthCounter::PrecomputationItem
             increases_count,
             ONE_IS_UNREACHABLE};
 
+    const std::size_t steps_to_1{K_SCALE_FACTOR - steps_left + increases_count};
     increases_count += (steps_left + 1) >> 1;
     value = (steps_left & 1) ? 2 : 1;
 
@@ -92,7 +93,7 @@ SequenceLengthCounter::PrecomputationItem
         uint_pow(uint_t{3}, increases_count),
         value,
         increases_count,
-        K_SCALE_FACTOR - steps_left + increases_count};
+        steps_to_1};
 }
 
 // end class PSOSequenceLengthCounter

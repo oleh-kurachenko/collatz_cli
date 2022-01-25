@@ -16,7 +16,7 @@
 namespace handle_input {
 
 template <typename UINT_T>
-std::optional<UINT_T> parse_input(const std::string_view);
+UINT_T parse_input(const std::string_view);
 
 template <typename UINT_T>
 constexpr UINT_T limit() {
@@ -29,12 +29,12 @@ constexpr __uint128_t limit() {
 }
 
 template<>
-std::optional<uint64_t> parse_input(const std::string_view);
+uint64_t parse_input(const std::string_view);
 
 #if defined(__GNUC__) && defined(__BYTE_ORDER__) && \
     (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
 template<>
-std::optional<__uint128_t> parse_input(const std::string_view);
+__uint128_t parse_input(const std::string_view);
 #endif
 
 }
