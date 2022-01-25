@@ -12,11 +12,17 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-O3")
 
 # "STD"/"OPT"
-set(BUILD_TYPE "OPT")
+if(NOT DEFINED BUILD_TYPE)
+    set(BUILD_TYPE "OPT")
+endif()
 # "YES"/"NO"
-set(USE_MULTITHREADING "YES")
+if(NOT DEFINED USE_MULTITHREADING)
+    set(USE_MULTITHREADING "YES")
+endif()
 # "YES"/"NO"
-set(USE_UINT128 "YES")
+if(NOT DEFINED USE_UINT128)
+    set(USE_UINT128 "YES")
+endif()
 
 set(HEADERS
     src/common.h
