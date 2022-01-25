@@ -101,7 +101,11 @@ systems with big-endian. It is limited only to little-endian.
 Note: compiler MUST support C++17.
 
 The following instructions should be executed at repository root. Binary file
-would be found as ```build/collatz_cli```
+would be found as ```build/collatz_cli```.
+
+As CMake variables definded from CLI are stored in CMake cache, build directory
+(```build``` at repository root) should be deleted before swithing to another
+build variant.
 
 ### Program one (GCC and CLang only)
 
