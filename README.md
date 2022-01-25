@@ -154,3 +154,8 @@ processing time, as:
 2. Access to dynamic is more expensive, time-wise.
 
 Internally, those two reasons are highly related to each other.
+
+### Input lower limit
+
+As input number is upper, non-inclusive limit ("upper limit below which the
+longest chain should be found"), minimum input value is 2.
