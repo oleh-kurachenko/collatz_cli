@@ -130,3 +130,27 @@ build variant.
 ```bash
     cmake -DUSE_MULTITHREADING=NO -B build && cmake --build build
 ```
+
+## Note
+
+### Testing
+
+There is no unit-tests in repository for two reasons:
+1. It would take about a week, taking in count my main workload, to carefully
+   test all implemented functionality.
+2. I don't want to carry dependency on any testing framework.
+
+Instead, I've performed manual testing.
+
+### Choice of K_SCALE_FACTOR
+
+K scale factor is a parameter of parity sequence based optimization. I've
+chosen it by benchmarking different values. In fact, it is the biggest even
+number which allows usage of automatic memory allocation for pre-computation
+results. I've tried using dynamic allocation there, but it only leads to grow of
+processing time, as:
+
+1. It does not fit into processor cache.
+2. Access to dynamic is more expensive, time-wise.
+
+Internally, those two reasons are highly related to each other.
