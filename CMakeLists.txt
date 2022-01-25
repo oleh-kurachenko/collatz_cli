@@ -1,12 +1,12 @@
 ##
 #  @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
 #  @date Created 2022-01-20
-#  @date Updated 2022-01-24
+#  @date Updated 2022-01-25
 #
 
 cmake_minimum_required(VERSION 3.15)
 
-project(collatz_cli VERSION 0.0.3)
+project(collatz_cli VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-O3")
@@ -45,6 +45,6 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC
     $<$<STREQUAL:${USE_UINT128},YES>:USE_UINT128>
 )
 
-if(USE_MULTITHREADING STREQUAL "YES")
+if(BUILD_TYPE STREQUAL "OPT" AND USE_MULTITHREADING STREQUAL "YES")
     target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC pthread)
 endif()
