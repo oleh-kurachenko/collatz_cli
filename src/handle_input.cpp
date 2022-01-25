@@ -1,7 +1,7 @@
 /**
  * @author Oleh Kurachenko <oleh.kurachenko@gmail.com>
  * @date Created 2022-01-20
- * @date Updated 2022-01-24
+ * @date Updated 2022-01-25
  */
 
 #include <string>
@@ -46,6 +46,10 @@ __uint128_t parse_input(const std::string_view input_string) {
 
     for (std::size_t i{0}; i < input_string.length(); ++i, t *= 10)
         result += (input_string[input_string.length() - i - 1] - '0') * t;
+
+    if (result == 0)
+        throw std::invalid_argument(
+                "parse_input(" + std::string(input_string) + ")");
 
     return result;
 }
