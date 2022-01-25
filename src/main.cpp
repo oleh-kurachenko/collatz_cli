@@ -23,7 +23,8 @@ int main(const int argc, const char *const *const argv) {
         input_number = handle_input::parse_input<uint_t>(argv[1]);
     } catch (const std::logic_error &error) {
         std::cerr
-            << "Bad argument: should be positive integer, less or equal to "
+            << "Bad argument: should be positive integer, at least 2, less "
+               "or equal to "
             << handle_input::limit<uint_t>()
             << std::endl;
         return 2;

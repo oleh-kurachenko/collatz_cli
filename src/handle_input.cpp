@@ -21,7 +21,7 @@ uint64_t parse_input(const std::string_view input_string) {
     std::size_t input_number_length{0};
     const uint64_t input_number =
         std::stoull(input_string_s, &input_number_length);
-    if (input_string.length() != input_number_length || input_number == 0)
+    if (input_string.length() != input_number_length || input_number < 2)
         throw std::invalid_argument(
                 "parse_input(" + std::string(input_string) + ")");
 
@@ -47,7 +47,7 @@ __uint128_t parse_input(const std::string_view input_string) {
     for (std::size_t i{0}; i < input_string.length(); ++i, t *= 10)
         result += (input_string[input_string.length() - i - 1] - '0') * t;
 
-    if (result == 0)
+    if (result < 1)
         throw std::invalid_argument(
                 "parse_input(" + std::string(input_string) + ")");
 
